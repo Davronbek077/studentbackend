@@ -55,20 +55,21 @@ export const getAllStudents = async (req, res) => {
 
 export const updatePaymentStatus = async (req, res) => {
   try {
-    const { paymentStatus, notes } = req.body;
+    const { paymentStatus } = req.body;
 
-    const updatedStudent = await Student.findByIdAndUpdate(
+    const student = await Student.findByIdAndUpdate(
       req.params.id,
-      { paymentStatus, notes },
+      { paymentStatus },
       { new: true }
     );
 
-    if (!updatedStudent) {
-      return res.status(404).json({ message: "O'quvchi topilmadi" });
+    if (!student) {
+      return res.status(404).json({ message: "O‘quvchi topilmadi" });
     }
 
-    res.json(updatedStudent);
+    res.json(student);
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
