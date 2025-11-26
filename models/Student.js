@@ -10,7 +10,18 @@ const studentSchema = new mongoose.Schema({
   fatherPhone: { type: String },
 
   motherName: { type: String },
-  motherPhone: { type: String }
+  motherPhone: { type: String },
+
+    paymentStatus: {
+      type: String,
+      enum: ["Qilingan", "Qilinmagan"],
+      default: "Qilinmagan"
+    },
+  
+    notes: {
+      type: String,
+      default: ""
+    }
 });
 
 export default mongoose.model("Student", studentSchema);

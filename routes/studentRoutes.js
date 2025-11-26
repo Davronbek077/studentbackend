@@ -8,16 +8,14 @@ import {
 
 const router = express.Router();
 
-// HAMMA TALABALAR
 router.get("/", getAllStudents);
 
-// YANGI TALABA
 router.post("/", addStudent);
 
-// GURUHDAGI TALABALAR
 router.get("/group/:id", getStudentsByGroup);
 
-// BITTA TALABA
 router.get("/:id", getStudent);
+
+router.patch("/payment/:id", updatePaymentStatus);
 
 export default router;
