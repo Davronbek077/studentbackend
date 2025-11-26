@@ -1,22 +1,8 @@
 import Student from "../models/Student.js";
 
-// 1) O‘quvchi qo‘shish
 export const addStudent = async (req, res) => {
   try {
-    const student = new Student({
-      name: req.body.name,
-      phone: req.body.phone,
-      group_id: req.body.group_id,
-
-      fatherName: req.body.fatherName,
-      fatherPhone: req.body.fatherPhone,
-      motherName: req.body.motherName,
-      motherPhone: req.body.motherPhone,
-
-      paymentStatus: req.body.paymentStatus,
-      notes: req.body.notes
-    });
-
+    const student = new Student(req.body);
     await student.save();
     res.json({ message: "Student qo‘shildi", student });
   } catch (err) {
@@ -24,7 +10,6 @@ export const addStudent = async (req, res) => {
   }
 };
 
-// 2) Guruh bo‘yicha o‘quvchilar
 export const getStudentsByGroup = async (req, res) => {
   try {
     const students = await Student.find({ group_id: req.params.id });
@@ -34,7 +19,6 @@ export const getStudentsByGroup = async (req, res) => {
   }
 };
 
-// 3) O‘quvchi profili
 export const getStudent = async (req, res) => {
   try {
     const student = await Student.findById(req.params.id);
@@ -68,7 +52,6 @@ export const updatePaymentStatus = async (req, res) => {
     }
 
     res.json(student);
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -78,14 +61,13 @@ export const deleteStudent = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await Student.destroy({ where: { id } });
+    const deleted = await Student.findByIdAndDelete(id);
 
     if (!deleted) {
       return res.status(404).json({ message: "Student not found" });
     }
 
     res.json({ message: "Student deleted successfully" });
-
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
