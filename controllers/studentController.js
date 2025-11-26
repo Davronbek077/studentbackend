@@ -76,9 +76,17 @@ export const updatePaymentStatus = async (req, res) => {
 
 export const deleteStudent = async (req, res) => {
   try {
-    await Student.findByIdAndDelete(req.params.id);
-    res.json({ message: "Student deleted" });
+    const { id } = req.params;
+
+    const deleted = await Student.destroy({ where: { id } });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    res.json({ message: "Student deleted successfully" });
+
   } catch (error) {
-    res.status(500).json({ error: "Delete error" });
+    res.status(500).json({ message: "Server error", error });
   }
 };
