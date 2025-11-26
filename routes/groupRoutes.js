@@ -1,12 +1,12 @@
 import express from "express";
-import { getGroups, createGroup } from "../controllers/groupController.js";
+import { getGroups, createGroup, deleteGroup } from "../controllers/groupController.js";
 
 const router = express.Router();
 
-// Barcha guruhlar
 router.get("/", getGroups);
-
-// Yangi guruh qo‘shish
 router.post("/", createGroup);
+
+// 🔥 Yangi qo‘shildi
+router.delete("/:id", deleteGroup);
 
 export default router;

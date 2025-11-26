@@ -73,3 +73,12 @@ export const updatePaymentStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const deleteStudent = async (req, res) => {
+  try {
+    await Student.findByIdAndDelete(req.params.id);
+    res.json({ message: "Student deleted" });
+  } catch (error) {
+    res.status(500).json({ error: "Delete error" });
+  }
+};

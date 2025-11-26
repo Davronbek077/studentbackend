@@ -17,3 +17,12 @@ export const createGroup = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const deleteGroup = async (req, res) => {
+  try {
+    await Group.findByIdAndDelete(req.params.id);
+    res.json({ message: "Group deleted" });
+  } catch (error) {
+    res.status(500).json({ error: "Delete error" });
+  }
+};
