@@ -1,4 +1,5 @@
 import Group from "../models/Group.js";
+import Student from "../models/Student.js";
 
 export const getGroups = async (req, res) => {
   try {
@@ -22,6 +23,10 @@ export const deleteGroup = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // 1️⃣ Avval shu guruhga tegishli studentlarni o‘chiramiz
+    await Student.deleteMany({ group_id: id }); // <-- TO'G'RI!
+
+    // 2️⃣ Keyin guruhni o‘chiramiz
     const deleted = await Group.findByIdAndDelete(id);
 
     if (!deleted) {
@@ -29,6 +34,7 @@ export const deleteGroup = async (req, res) => {
     }
 
     res.json({ message: "Group deleted successfully" });
+
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
