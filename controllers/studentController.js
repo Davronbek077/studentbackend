@@ -72,3 +72,21 @@ export const deleteStudent = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+export const updateStudent = async (req, res) => {
+  try {
+    const { name, phone, fatherName, fatherPhone, motherName, motherPhone, paymentStatus, notes } = req.body;
+
+    const updated = await Student.findByIdAndUpdate(
+      req.params.id,
+      { name, phone, fatherName, fatherPhone, motherName, motherPhone, paymentStatus, notes },
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ message: "O‘quvchi topilmadi" });
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
