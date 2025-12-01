@@ -1,52 +1,30 @@
 import express from "express";
-import Payment from "../models/payment.js";
+import { updatePayment } from "../controllers/paymentController.js";
+import Payment from "../models/Payment.js";
 
 const router = express.Router();
 
-// 🟩 1) O‘quvchiga tegishli to‘lovlar
-router.get("/student/:id", async (req, res) => {
-  try {
-    const payments = await Payment.find({ studentId: req.params.id });
-    res.json(payments);
-  } catch (err) {
-    res.status(500).json({ message: "To‘lovlarni olishda xatolik" });
-  }
-});
-
-// 🟩 2) Yangi to‘lov yaratish
+// Create
 router.post("/", async (req, res) => {
   try {
-    const newPayment = new Payment(req.body);
-    await newPayment.save();
-    res.json(newPayment);
+    const payment = await Payment.create(req.body);
+    res.json(payment);
   } catch (err) {
-    res.status(500).json({ message: "To‘lov qo‘shishda xatolik" });
+    res.status(500).json({ message: "Xatolik" });
   }
 });
 
-// 🟩 3) To‘lovni yangilash
-router.patch("/:id", async (req, res) => {
+// GET all by student
+router.get("/student/:id", async (req, res) => {
   try {
-    const updated = await Payment.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-
-    res.json(updated);
+    const list = await Payment.find({ studentId: req.params.id });
+    res.json(list);
   } catch (err) {
-    res.status(500).json({ message: "Yangilashda xatolik" });
+    res.status(500).json({ message: "Xatolik" });
   }
 });
 
-// 🟩 4) To‘lovni o‘chirish
-router.delete("/:id", async (req, res) => {
-  try {
-    await Payment.findByIdAndDelete(req.params.id);
-    res.json({ message: "To‘lov o‘chirildi" });
-  } catch (err) {
-    res.status(500).json({ message: "O‘chirishda xatolik" });
-  }
-});
+// UPDATE PAYMENT (MUHIM!)
+router.patch("/:id", updatePayment);
 
 export default router;
