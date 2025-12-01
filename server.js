@@ -4,6 +4,7 @@ import cors from "cors";
 
 import studentRoutes from "./routes/studentRoutes.js";
 import groupRoutes from "./routes/groupRoutes.js";
+import paymentsRoute from "./routes/payments.js"
 
 const app = express();
 app.use(express.json());
@@ -17,5 +18,6 @@ mongoose
 
 app.use("/students", studentRoutes);
 app.use("/groups", groupRoutes);
+app.use("/payments", paymentsRoute);
 
 app.listen(5000, () => console.log("Server 5000-portda ishlayapti"));
