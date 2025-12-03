@@ -4,7 +4,7 @@ import Payment from "../models/Payment.js";
 
 const router = express.Router();
 
-// Create
+// Create payment
 router.post("/", async (req, res) => {
   try {
     const payment = await Payment.create(req.body);
@@ -14,7 +14,17 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET all by student
+// GET ALL payments  ✅ YANGI!
+router.get("/", async (req, res) => {
+  try {
+    const payments = await Payment.find();
+    res.json(payments);
+  } catch (err) {
+    res.status(500).json({ message: "Xatolik" });
+  }
+});
+
+// GET payments by student ID
 router.get("/student/:id", async (req, res) => {
   try {
     const list = await Payment.find({ studentId: req.params.id });
@@ -24,7 +34,7 @@ router.get("/student/:id", async (req, res) => {
   }
 });
 
-// UPDATE PAYMENT (MUHIM!)
+// UPDATE payment
 router.patch("/:id", updatePayment);
 
 export default router;
