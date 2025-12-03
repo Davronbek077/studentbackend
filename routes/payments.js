@@ -1,6 +1,7 @@
 import express from "express";
 import { updatePayment } from "../controllers/paymentController.js";
 import Payment from "../models/Payment.js";
+import Student from "../models/Student.js";
 
 const router = express.Router();
 
@@ -31,6 +32,25 @@ router.get("/student/:id", async (req, res) => {
     res.json(list);
   } catch (err) {
     res.status(500).json({ message: "Xatolik" });
+  }
+});
+
+router.delete("/cleanup/not-in-students", async (req, res) => {
+  try {
+    const students = await Student.find().select("_id");
+    const studentIds = students.map(s => s._id.toString());
+
+    const result = await Payment.deleteMany({
+      studentId: { $nin: studentIds }
+    });
+
+    res.json({
+      message: "O‘chirilgan o‘quvchilarga tegishli to‘lovlar tozalandi",
+      deleted: result.deletedCount
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: "Xatolik", err });
   }
 });
 
