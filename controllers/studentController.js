@@ -30,7 +30,7 @@ export const getStudent = async (req, res) => {
 
 export const getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find();
+    const students = await Student.find().populate("group_id", "name");
     res.json(students);
   } catch (err) {
     res.status(500).json({ message: err.message });
