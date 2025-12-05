@@ -54,6 +54,15 @@ router.delete("/cleanup/not-in-students", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try{
+    await Payment.findByIdAndDelete(req.params.id);
+    res.json({message: "To'lov muvaffaqiyatli o'chirildi"});
+  } catch (err) {
+    res.status(500).json({message: "Xatolik", err});
+  }
+});
+
 // UPDATE payment
 router.patch("/:id", updatePayment);
 
