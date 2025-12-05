@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
 // GET ALL payments  ✅ YANGI!
 router.get("/", async (req, res) => {
   try {
-    const payments = await Payment.find();
+    const payments = await Payment.find().populate("studentId", "name").populate("groupId", "name");
     res.json(payments);
   } catch (err) {
     res.status(500).json({ message: "Xatolik" });
